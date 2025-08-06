@@ -1,4 +1,7 @@
 package com.example.coworking.Repository;
 
-public interface RoomRepository {
+import com.example.coworking.Entity.Room;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoomRepository extends JpaRepository<Room,Long> {
 }

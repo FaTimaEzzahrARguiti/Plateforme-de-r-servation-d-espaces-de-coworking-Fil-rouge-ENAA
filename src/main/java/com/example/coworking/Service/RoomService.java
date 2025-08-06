@@ -45,6 +45,7 @@ public class RoomService {
         Optional<Room> existingRoom = roomRepository.findById(id);
         if (existingRoom.isPresent()) {
             Room room = roomMapper.toEntity(roomDTO);
+
             room.setId(id);
             Room updatedRoom = roomRepository.save(room);
             return roomMapper.toDTO(updatedRoom);

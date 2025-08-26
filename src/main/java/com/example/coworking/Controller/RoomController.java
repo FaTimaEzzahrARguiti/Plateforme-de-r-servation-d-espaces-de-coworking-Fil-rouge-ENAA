@@ -49,4 +49,8 @@ public class RoomController {
 
     }
 
+    @GetMapping("/coworking-spaces/{spaceId}/rooms")
+    public List<RoomDTO> getRoomsBySpace(@PathVariable Long spaceId){
+        return roomService.getRoomsByCoworkingSpaceId(spaceId);
+    }
 }

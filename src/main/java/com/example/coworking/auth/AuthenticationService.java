@@ -1,5 +1,7 @@
 package com.example.coworking.auth;
 
+import com.example.coworking.Entity.Admin;
+import com.example.coworking.Entity.Client;
 import com.example.coworking.Enum.Role;
 import com.example.coworking.config.JwtService;
 import com.example.coworking.Repository.UserRepository;
@@ -18,20 +20,31 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+
     public AuthenticationResponse register(RegisterRequest request) {
-        var user= User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.utilisateur)
-                .build();
+        User user ;
+        switch (request.getRole()) {
+            case ADMIN -> user = new Admin();
+            case CLIENT -> user = new Client();
+
+            default -> throw new IllegalArgumentException("Invalid role: " + request.getRole());
+        }
+
+        user.setFirstname(request.getFirstname());
+        user.setLastname(request.getLastname());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+
         repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+
+        String jwtToken = jwtService.generateToken(user);
+
+        AuthenticationResponse response = new AuthenticationResponse();
+        response.setToken(jwtToken);
+
+        return response;
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

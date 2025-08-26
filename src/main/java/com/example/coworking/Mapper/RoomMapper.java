@@ -20,6 +20,10 @@ public class RoomMapper {
         roomDTO.setCapacity(room.getCapacity());
         roomDTO.setImage(room.getImage());
         roomDTO.setPrice(room.getPrice());
+        if (room.getSpace() != null) {
+            roomDTO.setCoworkingSpaceId(room.getSpace().getId());
+        }
+
         return roomDTO;
     }
 

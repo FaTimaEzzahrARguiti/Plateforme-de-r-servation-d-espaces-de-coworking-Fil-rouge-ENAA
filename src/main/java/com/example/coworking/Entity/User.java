@@ -28,6 +28,16 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
 
+    @OneToOne(mappedBy = "admin")
+    private CoworkingSpace coworkingSpace;
+
+    public CoworkingSpace getCoworkingSpace() {
+        return coworkingSpace;
+    }
+
+    public void setCoworkingSpace(CoworkingSpace coworkingSpace) {
+        this.coworkingSpace = coworkingSpace;
+    }
 
     public Long getId() {
         return id;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReservationMapper {
 
-    public static ReservationDTO toDTO(Reservation reservation) {
+    public ReservationDTO toDTO(Reservation reservation) {
         if (reservation == null) {
             return null;
         }
@@ -25,7 +25,7 @@ public class ReservationMapper {
         return dto;
     }
 
-    public static Reservation toEntity(ReservationDTO dto, User user, Room room) {
+    public Reservation toEntity(ReservationDTO dto, User user, Room room) {
         if (dto == null) {
             return null;
         }

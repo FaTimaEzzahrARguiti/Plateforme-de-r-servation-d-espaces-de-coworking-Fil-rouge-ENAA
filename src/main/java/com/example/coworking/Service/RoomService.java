@@ -28,11 +28,9 @@ public class RoomService {
     }
 
     public RoomDTO createRoom(RoomDTO roomDTO) {
-        // ✅ Hadiya hiya l-ligne li kat-3ti l-ID l-l-méthode
         CoworkingSpace space = coworkingSpaceRepository.findById(roomDTO.getCoworkingSpaceId())
                 .orElseThrow(() -> new RuntimeException("Coworking Space not found"));
 
-        // ... reste du code ...
         Room room = roomMapper.toEntity(roomDTO);
         room.setSpace(space);
         Room savedRoom = roomRepository.save(room);
@@ -57,7 +55,6 @@ public class RoomService {
             Room room = roomMapper.toEntity(roomDTO);
             room.setId(id);
 
-            // N-3awdou n-settiw l-CoworkingSpace bach ma t-3tana erreur
             CoworkingSpace space = coworkingSpaceRepository.findById(roomDTO.getCoworkingSpaceId())
                     .orElseThrow(() -> new RuntimeException("Coworking Space not found"));
             room.setSpace(space);
@@ -72,11 +69,12 @@ public class RoomService {
         roomRepository.deleteById(id);
     }
 
-    // ✅ Zid hadi, li gha t-jib rooms ghir b-l-ID dyal l-space
     public List<RoomDTO> getRoomsByCoworkingSpaceId(Long spaceId) {
         return roomRepository.findBySpaceId(spaceId)
                 .stream()
                 .map(roomMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+
 }

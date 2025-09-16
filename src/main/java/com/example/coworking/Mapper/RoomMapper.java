@@ -20,6 +20,7 @@ public class RoomMapper {
         roomDTO.setCapacity(room.getCapacity());
         roomDTO.setImage(room.getImage());
         roomDTO.setPrice(room.getPrice());
+        roomDTO.setAvailable(room.isAvailable());
         if (room.getSpace() != null) {
             roomDTO.setCoworkingSpaceId(room.getSpace().getId());
         }
@@ -39,6 +40,7 @@ public class RoomMapper {
         room.setCapacity(roomDTO.getCapacity());
         room.setImage(roomDTO.getImage());
         room.setPrice(roomDTO.getPrice());
+        room.setAvailable(roomDTO.isAvailable());
         return room;
     }
 }

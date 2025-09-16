@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import com.example.coworking.Entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,15 +50,24 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
-               new UsernamePasswordAuthenticationToken(
-                      request.getEmail(),
-                       request.getPassword()
-               )
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
         );
-        var user = repository.findByEmail(request.getEmail()).orElseThrow();
+
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder()
+                .id(user.getId())
+                .name(user.getFirstname() + " " + user.getLastname())
+                .email(user.getEmail())
+                .role(user.getRole().name())
                 .token(jwtToken)
                 .build();
     }
+
 }

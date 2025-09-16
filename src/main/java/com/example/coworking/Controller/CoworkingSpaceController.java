@@ -2,6 +2,7 @@ package com.example.coworking.Controller;
 
 
 import com.example.coworking.Dto.CoworkingSpaceDTO;
+import com.example.coworking.Dto.NombreReservation;
 import com.example.coworking.Service.CoworkingSpaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/space")
@@ -43,4 +44,11 @@ public class CoworkingSpaceController {
     public CoworkingSpaceDTO getById(@PathVariable Long id){
         return coworkingSpaceService.getSpaceById(id);
     }
+
+    @GetMapping("/count")
+    public List<NombreReservation> CountReservation(){
+        return coworkingSpaceService.CountReservation();
+    }
+
+
 }

@@ -2,47 +2,44 @@ package com.example.coworking.Mapper;
 
 import com.example.coworking.Dto.CoworkingSpaceDTO;
 import com.example.coworking.Entity.CoworkingSpace;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.coworking.Repository.UserRepository; // Import UserRepository
 import org.springframework.stereotype.Component;
-import java.util.stream.Collectors;
 
 @Component
 public class CoworkingSpaceMapper {
 
-    @Autowired
-    private RoomMapper roomMapper;
+    private final UserRepository userRepository;
 
-    public CoworkingSpaceDTO toDTO(CoworkingSpace space) {
-        if (space == null) {
-            return null;
-        }
-
-        CoworkingSpaceDTO spaceDTO = new CoworkingSpaceDTO();
-        spaceDTO.setId(space.getId());
-        spaceDTO.setName(space.getName());
-        spaceDTO.setAddress(space.getAddress());
-        spaceDTO.setDescription(space.getDescription());
-
-        if (space.getRooms() != null) {
-            spaceDTO.setRooms(space.getRooms().stream()
-                    .map(roomMapper::toDTO)
-                    .collect(Collectors.toList()));
-        }
-
-        return spaceDTO;
+    public CoworkingSpaceMapper(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public CoworkingSpace toEntity(CoworkingSpaceDTO spaceDTO) {
-        if (spaceDTO == null) {
-            return null;
+    public CoworkingSpace toEntity(CoworkingSpaceDTO dto) {
+        CoworkingSpace entity = new CoworkingSpace();
+        entity.setName(dto.getName());
+        entity.setAddress(dto.getAddress());
+        entity.setDescription(dto.getDescription());
+        entity.setImage(dto.getImage());
+
+        // Hna gha n'chercher l'user b'l'id
+        if (dto.getAdminId() != null) {
+            userRepository.findById(dto.getAdminId()).ifPresent(entity::setAdmin);
         }
+        return entity;
+    }
 
-        CoworkingSpace space = new CoworkingSpace();
-        space.setId(spaceDTO.getId());
-        space.setName(spaceDTO.getName());
-        space.setAddress(spaceDTO.getAddress());
-        space.setDescription(spaceDTO.getDescription());
+    public CoworkingSpaceDTO toDTO(CoworkingSpace entity) {
+        CoworkingSpaceDTO dto = new CoworkingSpaceDTO();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setAddress(entity.getAddress());
+        dto.setDescription(entity.getDescription());
+        dto.setImage(entity.getImage());
 
-        return space;
+        // N'zid l'id dial l'admin f DTO ila kan kayn
+        if (entity.getAdmin() != null) {
+            dto.setAdminId(entity.getAdmin().getId());
+        }
+        return dto;
     }
 }

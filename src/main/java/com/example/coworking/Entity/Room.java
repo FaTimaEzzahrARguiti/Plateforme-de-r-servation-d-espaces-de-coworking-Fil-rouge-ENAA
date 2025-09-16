@@ -11,15 +11,15 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Enumerated(EnumType.STRING) // ✅ Had l-ligne hiya l-jadida bach t-kheddem l-Enum
     private Type type;
     private String description;
     private String capacity;
     private String image;
     private Double price;
+    private boolean isAvailable;
 
-    // ✅ La relation vers l'espace de coworking
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "space_id")
     private CoworkingSpace space;
 }

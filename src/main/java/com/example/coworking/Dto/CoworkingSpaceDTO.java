@@ -1,9 +1,11 @@
 package com.example.coworking.Dto;
 
 
+import com.example.coworking.Entity.User;
 import lombok.*;
 
 import java.util.List;
+
 
 @Getter
 @Setter
@@ -15,6 +17,7 @@ public class CoworkingSpaceDTO {
     private String name;
     private String address;
     private String description;
+    private String image;
+    private Long adminId;
 
-    private List<RoomDTO> rooms;
 }
